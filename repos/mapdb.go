@@ -17,14 +17,14 @@ func (db *DB) CreateAccount(account models.Account) error {
 	}
 }
 
-func (db *DB) GetAccount(accountNumber string) (*models.Account, error) {
-	if val, ok := (*db)[accountNumber]; ok {
+func (db *DB) GetAccount(customerID string) (*models.Account, error) {
+	if val, ok := (*db)[customerID]; ok {
 		account, ok := val.(models.Account)
 		if !ok {
-			return nil, fmt.Errorf("error: invalid account type")
+			return nil, fmt.Errorf("invalid account type")
 		}
 		return &account, nil
 	} else {
-		return nil, fmt.Errorf("error: account number does not exist")
+		return nil, fmt.Errorf("account number does not exist")
 	}
 }

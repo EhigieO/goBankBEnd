@@ -40,3 +40,35 @@ func TestCreateAccountService(t *testing.T) {
 		t.Errorf("Expected transactions to be empty, but got %v", account.Transactions)
 	}
 }
+func TestGetAccount(t *testing.T) {
+	accountRequest := dtos.UserInfo{
+		CustomerID:    "123456",
+		InitialCredit: 100,
+	}
+	repository := &repos.DB{}
+	accountService := AccountServiceImpl{
+		repository: repository,
+	}
+
+	account, _ := accountService.CreateAccount(accountRequest)
+
+	result, err := accountService.GetAccount("123456")
+
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+	if result == nil {
+		t.Errorf("account not found")
+	}
+	if result.AccountNumber != account.AccountNumber {
+		t.Errorf("account number not same")
+	}
+	//if !reflect.DeepEqual(*result, account) {
+	//	t.Errorf("unexpected account: %v", result)
+	//}
+	//if !reflect.DeepEqual(repository, map[string]models.Account{
+	//	account.AccountNumber: *account,
+	//}) {
+	//	t.Errorf("unexpected accounts in repository: %v", repository)
+	//}
+}
