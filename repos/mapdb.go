@@ -13,7 +13,18 @@ func (db *DB) CreateAccount(account models.Account) error {
 		return nil
 	} else {
 		//utils.ApplicationLog.Printf("Error Saving account %v\n", error)
-		return fmt.Errorf("error saving account")
+		return fmt.Errorf("error: error saving account")
 	}
+}
 
+func (db *DB) GetAccount(accountNumber string) (*models.Account, error) {
+	if val, ok := (*db)[accountNumber]; ok {
+		account, ok := val.(models.Account)
+		if !ok {
+			return nil, fmt.Errorf("error: invalid account type")
+		}
+		return &account, nil
+	} else {
+		return nil, fmt.Errorf("error: account number does not exist")
+	}
 }

@@ -29,5 +29,12 @@ func (accountService AccountServiceImpl) CreateAccount(accountRequest dtos.UserI
 	} else {
 		return &account, nil
 	}
+}
 
+func (accountService AccountServiceImpl) GetAccount(accountNumber string) (*models.Account, error) {
+	account, err := accountService.repository.GetAccount(accountNumber)
+	if err != nil {
+		return nil, err
+	}
+	return account, nil
 }
