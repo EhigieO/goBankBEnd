@@ -1,3 +1,3 @@
-module github.com/EhigieO/goBankBEnd
+module rovaBankProject
 
 go 1.17

@@ -13,9 +13,9 @@ type AccountServiceImpl struct {
 }
 
 func (accountService AccountServiceImpl) CreateAccount(accountRequest dtos.UserInfo) (*models.Account, error) {
-	if accountRequest.InitialCredit > 0 {
-
-	}
+	//if accountRequest.InitialCredit > 0 {
+	//
+	//}
 	account := models.Account{
 		AccountNumber:  utils.GenerateAccountNumber(),
 		AccountBalance: accountRequest.InitialCredit,
