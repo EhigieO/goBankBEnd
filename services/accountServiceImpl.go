@@ -9,12 +9,15 @@ import (
 )
 
 type AccountServiceImpl struct {
-	repository repos.Repos
+	repository repos.AccountDb
 }
 
 func (accountService AccountServiceImpl) CreateAccount(accountRequest dtos.UserInfo) (*models.Account, error) {
 	//if accountRequest.InitialCredit > 0 {
-	//
+	//	err := transactionService.repository.CreateTransaction()
+	//	if err != nil {
+	//		return nil, err
+	//	}
 	//}
 	account := models.Account{
 		AccountNumber:  utils.GenerateAccountNumber(),
