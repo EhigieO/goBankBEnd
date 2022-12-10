@@ -72,3 +72,55 @@ func TestGetAccount(t *testing.T) {
 	//	t.Errorf("unexpected accounts in repository: %v", repository)
 	//}
 }
+
+func TestUpdateAccount(t *testing.T) {
+	accountRequest := dtos.UserInfo{
+		CustomerID:    "123456",
+		InitialCredit: 100,
+	}
+	accountRequest2 := dtos.UserInfo{
+		CustomerID:    "123458",
+		InitialCredit: 230100.0,
+	}
+	repository := &repos.DB{}
+	accountService := AccountServiceImpl{
+		repository: repository,
+	}
+	transactionService := TransactionServiceImpl{
+		repository: repository,
+	}
+
+	account, err := accountService.CreateAccount(accountRequest)
+	if err != nil {
+		t.Errorf("unexpected error One: %v", err)
+	}
+	account2, err := accountService.CreateAccount(accountRequest2)
+	if err != nil {
+		t.Errorf("unexpected error Two: %v", err)
+	}
+	amount := 230010.0
+
+	transaction, _ := transactionService.CreateTransaction(account2.AccountNumber, account.AccountNumber, amount)
+
+	err = accountService.UpdateAccount(*transaction)
+
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+	account1, _ := accountService.GetAccountByAccNum(account.AccountNumber)
+	account3, _ := accountService.GetAccountByAccNum(account2.AccountNumber)
+	if account3.AccountBalance > 100 {
+		t.Errorf("debit not working")
+
+	}
+	if account1.AccountBalance < 1000 {
+		t.Errorf("credit not working")
+	}
+	if len(account1.Transactions) != 1 {
+		t.Errorf("transaction not updating")
+	}
+	//fmt.Println(account1.Transactions)
+	//fmt.Println(account2.AccountBalance)
+	//fmt.Println(account.AccountBalance)
+
+}

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"fmt"
 	"rovaBankProject/dtos"
 	"rovaBankProject/models"
@@ -33,9 +34,40 @@ func (accountService AccountServiceImpl) CreateAccount(accountRequest dtos.UserI
 		return &account, nil
 	}
 }
+func (accountService AccountServiceImpl) UpdateAccount(transaction models.Transaction) error {
+	toAccount, err := accountService.GetAccountByAccNum(transaction.To)
+	if err != nil {
+		return err
+	}
+	fromAccount, err := accountService.GetAccountByAccNum(transaction.From)
+	if err != nil {
+		return err
+	}
+	if fromAccount.AccountBalance < transaction.Amount {
+		return errors.New("insufficient balance")
+	}
 
-func (accountService AccountServiceImpl) GetAccount(accountNumber string) (*models.Account, error) {
-	account, err := accountService.repository.GetAccount(accountNumber)
+	toAccount.AccountBalance += transaction.Amount
+	fromAccount.AccountBalance -= transaction.Amount
+
+	toAccount.Transactions = append(toAccount.Transactions[:], transaction)
+	fromAccount.Transactions = append(fromAccount.Transactions[:], transaction)
+
+	accountService.repository.SaveAccount(*toAccount)
+	accountService.repository.SaveAccount(*fromAccount)
+	return nil
+}
+
+func (accountService AccountServiceImpl) GetAccount(customerID string) (*models.Account, error) {
+	account, err := accountService.repository.GetAccount(customerID)
+	if err != nil {
+		return nil, err
+	}
+	return account, nil
+}
+
+func (accountService AccountServiceImpl) GetAccountByAccNum(accountNumber string) (*models.Account, error) {
+	account, err := accountService.repository.GetAccountByAccNum(accountNumber)
 	if err != nil {
 		return nil, err
 	}

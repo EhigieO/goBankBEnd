@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"rovaBankProject/models"
 	"rovaBankProject/repos"
 	"time"
@@ -11,6 +12,15 @@ type TransactionServiceImpl struct {
 }
 
 func (transactionService *TransactionServiceImpl) CreateTransaction(fromAccount, toAccount string, amount float64) (*models.Transaction, error) {
+	if amount <= 0 {
+		return nil, errors.New("amount too small")
+	}
+	if toAccount == "" {
+		return nil, errors.New("account  number cannot be empty")
+	}
+	if fromAccount == "" {
+		return nil, errors.New("account  number cannot be empty")
+	}
 	transaction := models.Transaction{
 		Amount: amount,
 		From:   fromAccount,
