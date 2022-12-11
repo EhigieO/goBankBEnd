@@ -83,11 +83,13 @@ func TestUpdateAccount(t *testing.T) {
 		InitialCredit: 230100.0,
 	}
 	repository := &repos.DB{}
+	tRepository := &repos.TDB{}
+
 	accountService := AccountServiceImpl{
 		repository: repository,
 	}
 	transactionService := TransactionServiceImpl{
-		repository: repository,
+		repository: tRepository,
 	}
 
 	account, err := accountService.CreateAccount(accountRequest)

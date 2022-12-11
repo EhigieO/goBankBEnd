@@ -14,12 +14,6 @@ type AccountServiceImpl struct {
 }
 
 func (accountService AccountServiceImpl) CreateAccount(accountRequest dtos.UserInfo) (*models.Account, error) {
-	//if accountRequest.InitialCredit > 0 {
-	//	err := transactionService.repository.CreateTransaction()
-	//	if err != nil {
-	//		return nil, err
-	//	}
-	//}
 	account := models.Account{
 		AccountNumber:  utils.GenerateAccountNumber(),
 		AccountBalance: accountRequest.InitialCredit,
@@ -34,6 +28,7 @@ func (accountService AccountServiceImpl) CreateAccount(accountRequest dtos.UserI
 		return &account, nil
 	}
 }
+
 func (accountService AccountServiceImpl) UpdateAccount(transaction models.Transaction) error {
 	toAccount, err := accountService.GetAccountByAccNum(transaction.To)
 	if err != nil {

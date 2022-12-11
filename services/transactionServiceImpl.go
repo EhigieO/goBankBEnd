@@ -4,6 +4,7 @@ import (
 	"errors"
 	"rovaBankProject/models"
 	"rovaBankProject/repos"
+	"rovaBankProject/utils"
 	"time"
 )
 
@@ -22,6 +23,7 @@ func (transactionService *TransactionServiceImpl) CreateTransaction(fromAccount,
 		return nil, errors.New("account  number cannot be empty")
 	}
 	transaction := models.Transaction{
+		ID:     utils.GenerateTransactionId(),
 		Amount: amount,
 		From:   fromAccount,
 		To:     toAccount,

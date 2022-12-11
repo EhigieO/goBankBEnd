@@ -12,12 +12,14 @@ func TestCreateTransaction(t *testing.T) {
 		InitialCredit: 100,
 	}
 	repository := &repos.DB{}
+	tRepository := &repos.TDB{}
+
 	accountService := AccountServiceImpl{
 		repository: repository,
 	}
 
 	transactionService := TransactionServiceImpl{
-		repository: repository,
+		repository: tRepository,
 	}
 
 	account, _ := accountService.CreateAccount(accountRequest)
